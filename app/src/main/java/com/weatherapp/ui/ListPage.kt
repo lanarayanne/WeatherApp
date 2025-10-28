@@ -60,11 +60,11 @@ fun ListPage(
             CityItem(city = city, onClose = {
                 /*TODO*/
                 viewModel.remove(city)
-                Toast.makeText(activity, "Cidade Excluída!", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity,"${city.name} excluída!", Toast.LENGTH_LONG).show()
 
             }, onClick = {
                 /*TODO*/
-                Toast.makeText(activity, "onClick", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, "${city.name}", Toast.LENGTH_LONG).show()
 
             })
         }

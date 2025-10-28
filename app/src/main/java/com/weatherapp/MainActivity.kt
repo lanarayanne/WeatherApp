@@ -48,6 +48,7 @@ class MainActivity : ComponentActivity() {
                     onDismiss = { showDialog = false},
                     onConfirm = { city ->
                         if(city.isNotBlank()) viewModel.add(city)
+                        showDialog = false
                     }
                 )
                 Scaffold(

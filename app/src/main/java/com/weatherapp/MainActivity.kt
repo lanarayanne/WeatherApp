@@ -38,6 +38,8 @@ import com.weatherapp.ui.nav.BottomNavItem
 import com.weatherapp.ui.nav.MainNavHost
 import com.weatherapp.ui.nav.Route
 import androidx.navigation.NavDestination.Companion.hasRoute
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -67,7 +69,9 @@ class MainActivity : ComponentActivity() {
 
                             actions = {
 
-                                IconButton( onClick = { finish() } ) {
+                                IconButton( onClick = {
+                                    Firebase.auth.signOut()
+                                     finish() } ) {
                                     Icon(
                                         imageVector =
                                             Icons.AutoMirrored.Filled.ExitToApp,

@@ -38,6 +38,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.weatherapp.ui.theme.WeatherAppTheme
 import androidx.compose.foundation.layout.imePadding
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 
 class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +64,11 @@ fun LoginPage(modifier: Modifier = Modifier) {
     val scrollState = rememberScrollState()
 
     Column(
-        modifier = modifier.padding(16.dp).fillMaxSize().verticalScroll(scrollState).imePadding(),
+        modifier = modifier
+            .padding(16.dp)
+            .fillMaxSize()
+            .verticalScroll(scrollState)
+            .imePadding(),
         //verticalArrangement = Arrangement.Center,
         horizontalAlignment = CenterHorizontally,
     ) {
@@ -92,16 +98,23 @@ fun LoginPage(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(20.dp))
         Row(modifier = Modifier) {
-            Button( onClick = {
+            Button(onClick = {
 
-                Toast.makeText(activity, "Login OK!", Toast.LENGTH_LONG).show()
-                activity.startActivity(
-                    Intent(activity, MainActivity::class.java).setFlags(
-                        FLAG_ACTIVITY_SINGLE_TOP
-                    )
-                )
+                Firebase.auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(activity) { task ->
+                        if (task.isSuccessful) {
+                            activity.startActivity(
+                                Intent(activity, MainActivity::class.java).setFlags(
+                                    FLAG_ACTIVITY_SINGLE_TOP
+                                )
+                            )
+                            Toast.makeText(activity, "Login OK!", Toast.LENGTH_LONG).show()
+                        } else {
+                            Toast.makeText(activity, "Login FALHOU!", Toast.LENGTH_LONG).show()
+                        }
+                    }
 
-            } ) {
+            }) {
                 Text("Login")
             }
             Spacer(modifier = Modifier.size(15.dp))
@@ -119,7 +132,7 @@ fun LoginPage(modifier: Modifier = Modifier) {
                             FLAG_ACTIVITY_SINGLE_TOP
                         )
                     )
-                   }
+                }
             ) {
                 Text("Registrar")
             }

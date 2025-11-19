@@ -38,7 +38,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.weatherapp.model.User
 import com.weatherapp.ui.theme.WeatherAppTheme
+import db.fb.FBDatabase
+import db.fb.toFBUser
 
 class RegisterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -117,6 +120,8 @@ fun RegisterPage(modifier: Modifier = Modifier) {
                         if (task.isSuccessful) {
                             Toast.makeText(activity,
                                 "Registro OK!", Toast.LENGTH_LONG).show()
+
+                            FBDatabase().register(User(name, email).toFBUser())
 
                         } else {
                             Toast.makeText(activity,

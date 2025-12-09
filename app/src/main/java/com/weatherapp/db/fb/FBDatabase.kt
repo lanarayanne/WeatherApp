@@ -1,11 +1,10 @@
-package db.fb
+package com.weatherapp.db.fb
 
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.firestore
-import com.weatherapp.model.City
 
 class FBDatabase {
     interface Listener {

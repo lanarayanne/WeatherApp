@@ -1,4 +1,4 @@
-package db.fb
+package com.weatherapp.db.fb
 
 import com.weatherapp.model.User
 

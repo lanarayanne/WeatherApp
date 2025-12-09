@@ -6,9 +6,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
@@ -33,7 +31,6 @@ import androidx.navigation.compose.rememberNavController
 import com.weatherapp.model.MainViewModel
 import com.weatherapp.ui.CityDialog
 import com.weatherapp.ui.theme.WeatherAppTheme
-import com.weatherapp.ui.HomePage
 import com.weatherapp.ui.nav.BottomNavBar
 import com.weatherapp.ui.nav.BottomNavItem
 import com.weatherapp.ui.nav.MainNavHost
@@ -42,8 +39,7 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.weatherapp.model.MainViewModelFactory
-import com.weatherapp.model.User
-import db.fb.FBDatabase
+import com.weatherapp.db.fb.FBDatabase
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)

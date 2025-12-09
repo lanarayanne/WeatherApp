@@ -1,8 +1,6 @@
 package com.weatherapp
 
 import android.app.Activity
-import android.content.Intent
-import android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -40,8 +38,8 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.weatherapp.model.User
 import com.weatherapp.ui.theme.WeatherAppTheme
-import db.fb.FBDatabase
-import db.fb.toFBUser
+import com.weatherapp.db.fb.FBDatabase
+import com.weatherapp.db.fb.toFBUser
 
 class RegisterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

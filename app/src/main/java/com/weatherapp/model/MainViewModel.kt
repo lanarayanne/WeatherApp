@@ -2,14 +2,13 @@ package com.weatherapp.model
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.model.LatLng
-import db.fb.FBCity
-import db.fb.FBDatabase
-import db.fb.FBUser
-import db.fb.toFBCity
+import com.weatherapp.db.fb.FBCity
+import com.weatherapp.db.fb.FBDatabase
+import com.weatherapp.db.fb.FBUser
+import com.weatherapp.db.fb.toFBCity
 
 class MainViewModel (private val db: FBDatabase): ViewModel(),
     FBDatabase.Listener {
@@ -67,3 +66,4 @@ class MainViewModelFactory(private val db : FBDatabase) :
 fun getCities() = List(20) { i ->
     City(name = "Cidade $i", weather = "Carregando clima...")
 }
+

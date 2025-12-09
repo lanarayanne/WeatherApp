@@ -42,8 +42,10 @@ fun MapPage(modifier: Modifier = Modifier, viewModel: MainViewModel) {
     }
 
     GoogleMap (modifier = Modifier.fillMaxSize(), cameraPositionState = camPosState, onMapClick = {
-            viewModel.add("Cidade@${it.latitude}:${it.longitude}", location = it)},
-        properties = MapProperties(isMyLocationEnabled = hasLocationPermission),
+            //viewModel.add("Cidade@${it.latitude}:${it.longitude}", location = it)},
+        viewModel.addCity(location = it)},
+
+properties = MapProperties(isMyLocationEnabled = hasLocationPermission),
         uiSettings = MapUiSettings(myLocationButtonEnabled = true)
     ) {
 
@@ -73,9 +75,6 @@ fun MapPage(modifier: Modifier = Modifier, viewModel: MainViewModel) {
             icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
         )
     }
-
-
-
 
 
     /*Column(

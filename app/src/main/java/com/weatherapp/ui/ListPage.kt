@@ -66,6 +66,7 @@ fun ListPage(
             }, onClick = {
                 /*TODO*/
                 Toast.makeText(activity, "${city.name}", Toast.LENGTH_LONG).show()
+                viewModel.city = city.name
 
             })
         }

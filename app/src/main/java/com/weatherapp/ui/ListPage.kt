@@ -43,6 +43,7 @@ import com.weatherapp.model.City
 import com.weatherapp.model.getCities
 import com.weatherapp.model.MainViewModel
 import com.weatherapp.model.Weather
+import com.weatherapp.ui.nav.Route
 
 @Composable
 fun ListPage(
@@ -67,6 +68,7 @@ fun ListPage(
                 /*TODO*/
                 Toast.makeText(activity, "${city.name}", Toast.LENGTH_LONG).show()
                 viewModel.city = city.name
+                viewModel.page = Route.Home
 
             })
         }

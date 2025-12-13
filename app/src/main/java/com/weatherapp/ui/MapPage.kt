@@ -27,9 +27,6 @@ import com.weatherapp.model.MainViewModel
 
 @Composable
 fun MapPage(modifier: Modifier = Modifier, viewModel: MainViewModel) {
-    val recife = LatLng(-8.05, -34.9)
-    val caruaru = LatLng(-8.27, -35.98)
-    val joaopessoa = LatLng(-7.12, -34.84)
     val camPosState = rememberCameraPositionState()
 
     val context = LocalContext.current
@@ -56,24 +53,6 @@ properties = MapProperties(isMyLocationEnabled = hasLocationPermission),
             }
         }
 
-        Marker(
-            state = MarkerState(position = recife),
-            title = "Recife",
-            snippet = "Marcador em Recife",
-            icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)
-        )
-        Marker(
-            state = MarkerState(position = caruaru),
-            title = "Caruaru",
-            snippet = "Marcador em Caruaru",
-            icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)
-        )
-        Marker(
-            state = MarkerState(position = joaopessoa),
-            title = "João Pessoa",
-            snippet = "Marcador em João Pessoa",
-            icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
-        )
     }
 
 

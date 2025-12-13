@@ -42,6 +42,7 @@ import com.weatherapp.RegisterActivity
 import com.weatherapp.model.City
 import com.weatherapp.model.getCities
 import com.weatherapp.model.MainViewModel
+import com.weatherapp.model.Weather
 
 @Composable
 fun ListPage(
@@ -57,7 +58,7 @@ fun ListPage(
             .padding(8.dp)
     ) {
         items(cityList, key = { it.name }) { city ->
-            CityItem(city = city, onClose = {
+            CityItem(city = city, weather = viewModel.weather(city.name), onClose = {
                 /*TODO*/
                 viewModel.remove(city)
                 Toast.makeText(activity,"${city.name} excluída!", Toast.LENGTH_LONG).show()
@@ -76,10 +77,12 @@ fun ListPage(
 @Composable
 fun CityItem(
     city: City,
+    weather: Weather,
     onClick: () -> Unit,
     onClose: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val desc = if (weather == Weather.LOADING) "Carregando Clima..." else weather.desc
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -100,8 +103,7 @@ fun CityItem(
             )
             Text(
                 modifier = Modifier,
-                text = city.weather ?: "Carregando clima...",
-
+                text = desc,
                 fontSize = 16.sp
             )
 

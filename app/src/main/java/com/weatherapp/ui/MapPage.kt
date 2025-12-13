@@ -24,6 +24,7 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.weatherapp.model.MainViewModel
+import com.weatherapp.model.Weather
 
 @Composable
 fun MapPage(modifier: Modifier = Modifier, viewModel: MainViewModel) {
@@ -32,24 +33,32 @@ fun MapPage(modifier: Modifier = Modifier, viewModel: MainViewModel) {
     val context = LocalContext.current
     val hasLocationPermission by remember {
         mutableStateOf(
-            ContextCompat.checkSelfPermission(context,
-                android.Manifest.permission.ACCESS_FINE_LOCATION) ==
+            ContextCompat.checkSelfPermission(
+                context,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) ==
                     PackageManager.PERMISSION_GRANTED
         )
     }
 
-    GoogleMap (modifier = Modifier.fillMaxSize(), cameraPositionState = camPosState, onMapClick = {
+    GoogleMap(
+        modifier = Modifier.fillMaxSize(), cameraPositionState = camPosState, onMapClick = {
             //viewModel.add("Cidade@${it.latitude}:${it.longitude}", location = it)},
-        viewModel.addCity(location = it)},
+            viewModel.addCity(location = it)
+        },
 
-properties = MapProperties(isMyLocationEnabled = hasLocationPermission),
+        properties = MapProperties(isMyLocationEnabled = hasLocationPermission),
         uiSettings = MapUiSettings(myLocationButtonEnabled = true)
     ) {
 
         viewModel.cities.forEach {
             if (it.location != null) {
+                val weather = viewModel.weather(it.name)
+                val desc = if (weather == Weather.LOADING) "Carregando clima..."
+                else weather.desc
                 Marker( state = MarkerState(position = it.location),
-                    title = it.name, snippet = "${it.location}")
+                    title = it.name, snippet = desc
+                )
             }
         }
 

@@ -32,12 +32,15 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onLayoutRectChanged
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
+import com.weatherapp.R
 import com.weatherapp.RegisterActivity
 import com.weatherapp.model.City
 import com.weatherapp.model.getCities
@@ -93,9 +96,11 @@ fun CityItem(
             .clickable { onClick() },
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            Icons.Rounded.FavoriteBorder,
-            contentDescription = ""
+        AsyncImage(
+            model = weather.imgUrl,
+            modifier = Modifier.size(75.dp),
+            error = painterResource(id = R.drawable.loading),
+            contentDescription = "Imagem"
         )
         Spacer(modifier = Modifier.size(12.dp))
         Column(modifier = modifier.weight(1f)) {

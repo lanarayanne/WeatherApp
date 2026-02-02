@@ -10,12 +10,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.room.util.copy
 import coil.compose.AsyncImage
 import com.weatherapp.R
 import com.weatherapp.model.Forecast
@@ -57,8 +61,27 @@ fun HomePage(viewModel: MainViewModel) {
                 )
                 Column {
                     Spacer(modifier = Modifier.size(12.dp))
-                    Text(text = viewModel.city ?: "Selecione uma cidade...",
-                        fontSize = 28.sp)
+                    Row {
+                        Text(text = viewModel.city ?: "Selecione uma cidade...",
+                            fontSize = 28.sp)
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        val city = viewModel.cityMap[viewModel.city]
+
+                        val icon =
+                            if (city?.isMonitored == true)
+                                Icons.Filled.Notifications
+                            else
+                                Icons.Outlined.Notifications
+
+                        Icon( imageVector = icon, contentDescription = "Monitorada?",
+                            modifier = Modifier.size(32.dp).clickable {
+                                viewModel.update(city = city!!.copy(isMonitored = !city.isMonitored))
+                            }
+                        )
+
+
+                    }
                     viewModel.city?.let { name ->
                         val weather = viewModel.weather(name)
                         Spacer(modifier = Modifier.size(12.dp))
@@ -67,7 +90,9 @@ fun HomePage(viewModel: MainViewModel) {
                         Spacer(modifier = Modifier.size(12.dp))
                         Text(text = "Temp: " + weather?.temp + "°C",
                             fontSize = 22.sp)
+
                     }
+
                 }
             }
 

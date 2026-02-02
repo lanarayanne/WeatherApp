@@ -19,6 +19,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -47,6 +49,7 @@ import com.weatherapp.model.getCities
 import com.weatherapp.model.MainViewModel
 import com.weatherapp.model.Weather
 import com.weatherapp.ui.nav.Route
+import kotlin.collections.get
 
 @Composable
 fun ListPage(
@@ -109,6 +112,19 @@ fun CityItem(
                 text = city.name,
                 fontSize = 24.sp
             )
+
+
+            val icon =
+                if (city.isMonitored == true)
+                    Icons.Filled.Notifications
+                else
+                    Icons.Outlined.Notifications
+
+            Icon( imageVector = icon, contentDescription = "Monitorada?",
+                modifier = Modifier.size(32.dp)
+            )
+
+
             Text(
                 modifier = Modifier,
                 text = desc,

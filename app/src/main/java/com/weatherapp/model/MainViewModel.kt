@@ -41,6 +41,8 @@ class MainViewModel (private val db: FBDatabase,
         get() = _page.value
         set(tmp) { _page.value = tmp }
 
+    val cityMap: Map<String, City> get() = _cities.toMap()
+
     init {
         db.setListener(this)
     }
@@ -121,6 +123,10 @@ class MainViewModel (private val db: FBDatabase,
                 _forecast[name] = apiForecast.toForecast()
             }
         }
+    }
+
+    fun update(city: City) {
+        db.update(city.toFBCity())
     }
 
 }

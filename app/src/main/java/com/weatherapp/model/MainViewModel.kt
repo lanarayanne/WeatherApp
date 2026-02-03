@@ -13,10 +13,13 @@ import com.weatherapp.db.fb.FBCity
 import com.weatherapp.db.fb.FBDatabase
 import com.weatherapp.db.fb.FBUser
 import com.weatherapp.db.fb.toFBCity
+import com.weatherapp.monitor.ForecastMonitor
 import com.weatherapp.ui.nav.Route
 
 class MainViewModel (private val db: FBDatabase,
-    private val service: WeatherService): ViewModel(), FBDatabase.Listener {
+    private val service: WeatherService,
+    private val monitor: ForecastMonitor
+): ViewModel(), FBDatabase.Listener {
 
     private val _cities = mutableStateMapOf<String, City>()
 
@@ -60,19 +63,23 @@ class MainViewModel (private val db: FBDatabase,
     }
 
     override fun onUserSignOut() {
-        //TODO("Not yet implemented")
+        monitor.cancelAll()
     }
 
     override fun onCityAdded(city: FBCity) {
         _cities[city.name!!] = city.toCity()
+        monitor.updateCity(city.toCity())
     }
 
     override fun onCityUpdated(city: FBCity) {
         _cities.remove(city.name)
-        _cities[city.name!!] = city.toCity()     }
+        _cities[city.name!!] = city.toCity()
+        monitor.updateCity(city.toCity())
+    }
 
     override fun onCityRemoved(city: FBCity) {
         _cities.remove(city.name)
+        monitor.cancelCity(city.toCity())
     }
 
     fun addCity(name: String) {
@@ -131,11 +138,13 @@ class MainViewModel (private val db: FBDatabase,
 
 }
 
-class MainViewModelFactory(private val db : FBDatabase, private val service: WeatherService) :
+class MainViewModelFactory(private val db : FBDatabase,
+                           val service: WeatherService,
+                           val monitor: ForecastMonitor) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
-            return MainViewModel(db, service) as T
+            return MainViewModel(db, service, monitor) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

@@ -55,15 +55,23 @@ fun HomePage(viewModel: MainViewModel) {
             Row {
                 AsyncImage(
                     model = viewModel.weather(viewModel.city!!).imgUrl,
-                    modifier = Modifier.size(140.dp),
+                    modifier = Modifier.size(100.dp),
                     error = painterResource(id = R.drawable.loading),
                     contentDescription = "Imagem"
                 )
                 Column {
                     Spacer(modifier = Modifier.size(12.dp))
-                    Row {
-                        Text(text = viewModel.city ?: "Selecione uma cidade...",
-                            fontSize = 28.sp)
+                    Row (
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = viewModel.city ?: "Selecione uma cidade...",
+                            fontSize = 28.sp,
+                            modifier = Modifier.weight(1f))
+
                         Spacer(modifier = Modifier.width(8.dp))
 
                         val city = viewModel.cityMap[viewModel.city]
@@ -74,22 +82,23 @@ fun HomePage(viewModel: MainViewModel) {
                             else
                                 Icons.Outlined.Notifications
 
-                        Icon( imageVector = icon, contentDescription = "Monitorada?",
+                        Icon(
+                            imageVector = icon,
+                            contentDescription = "Monitorada?",
                             modifier = Modifier.size(32.dp).clickable {
                                 viewModel.update(city = city!!.copy(isMonitored = !city.isMonitored))
                             }
                         )
-
 
                     }
                     viewModel.city?.let { name ->
                         val weather = viewModel.weather(name)
                         Spacer(modifier = Modifier.size(12.dp))
                         Text(text = weather?.desc ?: "...",
-                            fontSize = 22.sp)
+                            fontSize = 20.sp)
                         Spacer(modifier = Modifier.size(12.dp))
                         Text(text = "Temp: " + weather?.temp + "°C",
-                            fontSize = 22.sp)
+                            fontSize = 20.sp)
 
                     }
 
@@ -125,7 +134,7 @@ fun ForecastItem (
     ) {
         AsyncImage(
             model = forecast.imgUrl,
-            modifier = Modifier.size(70.dp),
+            modifier = Modifier.size(45.dp),
             error = painterResource(id = R.drawable.loading),
             contentDescription = "Imagem"
         )
@@ -134,9 +143,9 @@ fun ForecastItem (
 
         Column {
             Text(modifier = Modifier, text = forecast.weather, fontSize = 24.sp)
+            Text(modifier = Modifier, text = forecast.date, fontSize = 20.sp)
             Row {
-                Text(modifier = Modifier, text = forecast.date, fontSize = 20.sp)
-                Spacer(modifier = Modifier.size(12.dp))
+//                Spacer(modifier = Modifier.size(12.dp))
                 Text(modifier = Modifier, text = "Min: $tempMin℃", fontSize = 16.sp)
                 Spacer(modifier = Modifier.size(12.dp))
                 Text(modifier = Modifier, text = "Max: $tempMax℃", fontSize = 16.sp)

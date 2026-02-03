@@ -37,6 +37,7 @@ import androidx.compose.ui.layout.onLayoutRectChanged
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
@@ -101,29 +102,31 @@ fun CityItem(
     ) {
         AsyncImage(
             model = weather.imgUrl,
-            modifier = Modifier.size(75.dp),
+            modifier = Modifier.size(40.dp),
             error = painterResource(id = R.drawable.loading),
             contentDescription = "Imagem"
         )
         Spacer(modifier = Modifier.size(12.dp))
         Column(modifier = modifier.weight(1f)) {
-            Text(
-                modifier = Modifier,
-                text = city.name,
-                fontSize = 24.sp
-            )
+            Row {
+                Text(
+                    modifier = Modifier.weight(1f),
+                    text = city.name,
+                    fontSize = 24.sp,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Spacer(modifier = Modifier.size(12.dp))
 
+                val icon =
+                    if (city.isMonitored == true)
+                        Icons.Filled.Notifications
+                    else
+                        Icons.Outlined.Notifications
 
-            val icon =
-                if (city.isMonitored == true)
-                    Icons.Filled.Notifications
-                else
-                    Icons.Outlined.Notifications
-
-            Icon( imageVector = icon, contentDescription = "Monitorada?",
-                modifier = Modifier.size(32.dp)
-            )
-
+                Icon( imageVector = icon, contentDescription = "Monitorada?",
+                    modifier = Modifier.size(30.dp)
+                )
+            }
 
             Text(
                 modifier = Modifier,

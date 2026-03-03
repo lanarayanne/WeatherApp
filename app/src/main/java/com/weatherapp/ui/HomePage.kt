@@ -22,6 +22,7 @@ import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
@@ -31,6 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.room.util.copy
 import coil.compose.AsyncImage
 import com.weatherapp.R
@@ -52,13 +54,31 @@ fun HomePage(viewModel: MainViewModel) {
                     textAlign = TextAlign.Center, fontSize = 28.sp)
             }
         } else {
+            val cities = viewModel.cities.collectAsStateWithLifecycle(emptyMap()).value
+            val city = cities[viewModel.city!!]
+            val weather = viewModel.weather.collectAsStateWithLifecycle(emptyMap())
+                .value[viewModel.city!!]
+            val icon = if (city?.isMonitored == true) Icons.Filled.Notifications else
+                Icons.Outlined.Notifications
+            val forecasts = viewModel.forecast.collectAsStateWithLifecycle(emptyMap())
+                .value[viewModel.city!!]
+            LaunchedEffect(viewModel.city!!) {
+                viewModel.loadForecast(viewModel.city!!)
+            }
             Row {
                 AsyncImage(
-                    model = viewModel.weather(viewModel.city!!).imgUrl,
+//                    model = viewModel.weather(viewModel.city!!).imgUrl,
+                    model = weather?.imgUrl,
+//                    model = icon,
                     modifier = Modifier.size(100.dp),
                     error = painterResource(id = R.drawable.loading),
                     contentDescription = "Imagem"
                 )
+//                Icon(
+//                    imageVector = icon,
+//                    contentDescription = "Imagem",
+//                    modifier = Modifier.size(100.dp)
+//                )
                 Column {
                     Spacer(modifier = Modifier.size(12.dp))
                     Row (
@@ -74,7 +94,7 @@ fun HomePage(viewModel: MainViewModel) {
 
                         Spacer(modifier = Modifier.width(8.dp))
 
-                        val city = viewModel.cityMap[viewModel.city]
+//                        val city = viewModel.cityMap[viewModel.city]
 
                         val icon =
                             if (city?.isMonitored == true)
@@ -92,7 +112,7 @@ fun HomePage(viewModel: MainViewModel) {
 
                     }
                     viewModel.city?.let { name ->
-                        val weather = viewModel.weather(name)
+//                        val weather = viewModel.weather(name)
                         Spacer(modifier = Modifier.size(12.dp))
                         Text(text = weather?.desc ?: "...",
                             fontSize = 20.sp)
@@ -104,8 +124,14 @@ fun HomePage(viewModel: MainViewModel) {
 
                 }
             }
-
-            viewModel.forecast(viewModel.city!!)?.let { forecasts ->
+//            viewModel.forecast(viewModel.city!!)?.let { forecasts ->
+//                LazyColumn {
+//                    items(items = forecasts) { forecast ->
+//                        ForecastItem(forecast, onClick = { })
+//                    }
+//                }
+//            }
+            forecasts?.let { forecasts ->
                 LazyColumn {
                     items(items = forecasts) { forecast ->
                         ForecastItem(forecast, onClick = { })

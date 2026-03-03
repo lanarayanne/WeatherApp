@@ -26,6 +26,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.toMutableStateList
@@ -41,6 +42,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.weatherapp.R
@@ -57,7 +59,10 @@ fun ListPage(
     modifier: Modifier = Modifier,
     viewModel: MainViewModel
 ) {
-    val cityList = viewModel.cities
+    val cityMap = viewModel.cities.collectAsStateWithLifecycle(emptyMap()).value
+    val cityList = cityMap.values.toList().sortedBy { it.name }
+    val weatherMap = viewModel.weather.collectAsStateWithLifecycle(emptyMap()).value
+//    val cityList = viewModel.cities
     val activity = LocalActivity.current as Activity //Toasts
 
     LazyColumn(
@@ -66,7 +71,12 @@ fun ListPage(
             .padding(8.dp)
     ) {
         items(cityList, key = { it.name }) { city ->
-            CityItem(city = city, weather = viewModel.weather(city.name), onClose = {
+            LaunchedEffect(city.name) {
+                viewModel.loadWeather(city.name)
+            }
+            val weather = weatherMap[city.name]?:Weather.LOADING;
+
+            CityItem(city = city, weather = weather, onClose = {
                 /*TODO*/
                 viewModel.remove(city)
                 Toast.makeText(activity,"${city.name} excluída!", Toast.LENGTH_LONG).show()

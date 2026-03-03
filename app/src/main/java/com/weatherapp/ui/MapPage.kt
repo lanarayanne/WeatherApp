@@ -33,9 +33,10 @@ import com.weatherapp.model.MainViewModel
 import com.weatherapp.model.Weather
 
 @Composable
-fun MapPage(modifier: Modifier = Modifier, viewModel: MainViewModel) {
+fun MapPage(
+    modifier: Modifier = Modifier,
+    viewModel: MainViewModel) {
     val camPosState = rememberCameraPositionState()
-
     val context = LocalContext.current
     val hasLocationPermission by remember {
         mutableStateOf(
@@ -55,31 +56,32 @@ fun MapPage(modifier: Modifier = Modifier, viewModel: MainViewModel) {
 
         properties = MapProperties(isMyLocationEnabled = hasLocationPermission),
         uiSettings = MapUiSettings(myLocationButtonEnabled = true)
-    )
-    val cities = viewModel.cities.collectAsStateWithLifecycle(emptyMap()).value
-    val weathers = viewModel.weather.collectAsStateWithLifecycle(emptyMap()).value
-    cities.values.forEach {
-        if (it.location != null) {
-            val weather = weathers[it.name] ?: Weather.LOADING
-            LaunchedEffect(it.name) {
-                viewModel.loadWeather(it.name)
-            }
-            LaunchedEffect(weather) {
-                viewModel.loadBitmap(it.name)
-            }
-            val image = weather.bitmap ?: getDrawable(context, R.drawable.loading)!!.toBitmap()
+    ) {
+        val cities = viewModel.cities.collectAsStateWithLifecycle(emptyMap()).value
+        val weathers = viewModel.weather.collectAsStateWithLifecycle(emptyMap()).value
+        cities.values.forEach {
+            if (it.location != null) {
+                val weather = weathers[it.name] ?: Weather.LOADING
+                LaunchedEffect(it.name) {
+                    viewModel.loadWeather(it.name)
+                }
+                LaunchedEffect(weather) {
+                    viewModel.loadBitmap(it.name)
+                }
+                val image = weather.bitmap ?: getDrawable(context, R.drawable.loading)!!.toBitmap()
 
-            val marker = BitmapDescriptorFactory
-                .fromBitmap(image.scale(120, 120))
+                val marker = BitmapDescriptorFactory
+                    .fromBitmap(image.scale(120, 120))
 
-            val desc = if (weather == Weather.LOADING) "Carregando clima..."
-            else weather.desc
-            Marker(
-                state = MarkerState(position = it.location),
-                icon = marker,
-                title = it.name, snippet = desc
-            )
-        }
+                val desc = if (weather == Weather.LOADING) "Carregando clima..."
+                else weather.desc
+
+                Marker(
+                    state = MarkerState(position = it.location),
+                    icon = marker,
+                    title = it.name, snippet = desc
+                )
+            }
 
 
 //        viewModel.cities.forEach {
@@ -90,6 +92,7 @@ fun MapPage(modifier: Modifier = Modifier, viewModel: MainViewModel) {
 //            }
 //        }
 
+        }
     }
 
 
